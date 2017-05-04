@@ -1,6 +1,9 @@
 #ifndef PID_H
 #define PID_H
 
+#include <ctime>
+#include <krb5.h>
+
 class PID {
 public:
   /*
@@ -16,6 +19,17 @@ public:
   double Kp;
   double Ki;
   double Kd;
+
+  double pre_cte;
+  double dif_cte;
+  double int_cte;
+
+  bool isFirstUpdate;
+
+  std::clock_t cur_time;
+  std::clock_t pre_time;
+
+  double dt;
 
   /*
   * Constructor

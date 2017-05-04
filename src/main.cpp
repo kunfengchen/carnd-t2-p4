@@ -34,9 +34,44 @@ int main()
 
   PID pid;
   // DONE: Initialize the pid variable.
-  // finishing loop with dancing around, Kd is too big! pid.Init(0.3, 0.03, 0.05);
-  // good1 with big turn pid.Init(0.3, 0.06, 0.02);
-  // good2 Kd a bit small pid.Init(0.3, 0.03, 0.01);
+
+  /**
+   * How to setup pid (proportional-integral-derivative)
+   * coefficient Kp, Ki, and Kd values
+   * First time I set (Kp, Ki, Kd) to like (0.5, 0.3. 0.3),
+   * The car just drive in a circle, after tried different
+   * values, it still ran on the circle.
+   *
+   * Then I decided to use Kp only first (returned only p_error)
+   * and observed all k_error, i_error, and k_error)
+   *
+   * Used Kp = 0.5 to have the car run in a sin wave. Then I applied
+   * d_error (returned p_erro + d_error) to reduce the oscillations.
+   *
+   * Used too big of d_error, like 0.3, it reduced the path oscillations,
+   * but the car tire is turning left and right like craze.
+   * Used too small of de_error, like 0.001, the car path still oscillated.
+   * Kd = 0.003 is the right value after sereral tries.
+   *
+   * There are observations on fine-tuning the Kp: If the Kp is too big, the
+   * path oscillation is to strong. On the other hand, if the Kp is too small,
+   * the car will fail to make the sharp turns.
+   *
+   * By observing i_error, I used a small Ki to make sure i_error won't
+   * affect TotalError too much, since there is no car bias to correct
+   * in the simulator.
+   *
+   * That was tuning pid variable with throttle 0.3 (25 - 30 miles/hours)
+   *
+   * Have tried throttle 0.6 and with differ pid values. The car is harder to
+   * stay on the track this time with higher speed.
+   *
+   * The pid control in the simulator works as expected.
+   */
+
+  // finishing loop with dancing around, Kd is too big! pid.Init(0.3, 0.003, 0.05);
+  // good1 with big turn pid.Init(0.3, 0.006, 0.02);
+  // good2 Kd a bit small pid.Init(0.3, 0.003, 0.01);
   // ok pid.Init(0.35, 0.003, 0.03);
   pid.Init(0.30, 0.003, 0.03);
 
